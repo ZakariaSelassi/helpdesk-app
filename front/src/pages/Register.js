@@ -1,4 +1,6 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import {register} from "../features/auth/authSlice"
 import {FaUser} from 'react-icons/fa'
 import {BiShow, BiHide} from 'react-icons/bi'
 import {toast} from 'react-toastify'
@@ -11,16 +13,18 @@ const Register = () => {
     password:'',
     passwordconf:'',
   })
+
   const {name,email,password,passwordconf} = formData;
 
-  const handleChange = (event) => {
-   
+  const dispatch = useDispatch();
 
+  const {user,loading,error} = useSelector(state => state.auth);
+
+  const handleChange = (event) => {
     setFormData({
       ...formData,
       [event.target.name]:event.target.value
     })
-    console.log(event.target.value)
   }
   const handleShow = () => {
     setShow(!show);
@@ -30,12 +34,20 @@ const Register = () => {
     event.preventDefault();
     if(password !== passwordconf){
       toast.error("Password don't match ! ")
+    }else{
+      const userData ={
+        name,
+        email,
+        password,
+      }
+      dispatch(register(userData))
+      toast.success("Register Successfully ! ")
     }
   }
   return (
     <>
       <section className='register'>
-        <h1> <FaUser/> Register</h1>
+        <h1> <FaUser/> Register {user}</h1>
         <p>Please create an account</p>
       </section>
       <section className='form'>
@@ -100,7 +112,7 @@ const Register = () => {
           </div>
 
           <div className='form-group'>
-                <button className='btn btn-block'>Submit</button>
+              <button className='btn btn-block'>Submit</button>
           </div>
         </form>
       </section>
