@@ -1,7 +1,18 @@
 import React from 'react'
 import {FaSignInAlt,FaSignOutAlt, FaUser} from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link ,useNavigate} from 'react-router-dom'
+import { useSelector,useDispatch }  from 'react-redux'
+import {logout} from '../features/auth/authSlice'
 const Header = () => {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const {user} = useSelector(state => state.auth)
+
+    const onLogout = () => {
+        dispatch(logout())
+        navigate('/')
+    }
   return (
     
     <header>
@@ -10,9 +21,20 @@ const Header = () => {
         </div>
         <ul>
             <li>
-                <Link to='/login'>
+                {
+                    user ? 
+                    ( 
+                    <div onClick={onLogout}>
+                          <FaSignOutAlt /> Logout
+                    </div>
+                  
+                   ) 
+                : 
+                    (<Link to='/login'>
                     <FaSignInAlt /> Login
-                </Link>
+                    </Link>)
+                }
+               
             </li>
             <li>
                 <Link to='/register'>

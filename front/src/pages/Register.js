@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import {register} from "../features/auth/authSlice"
 import {FaUser} from 'react-icons/fa'
 import {BiShow, BiHide} from 'react-icons/bi'
 import {toast} from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.css';
 const Register = () => {
+
+  const navigate = useNavigate()
   const [show,setShow] = useState(false);
   const [formData,setFormData] = useState({
     name:'',
@@ -18,7 +21,17 @@ const Register = () => {
 
   const dispatch = useDispatch();
 
-  const {user,loading,error} = useSelector(state => state.auth);
+  const {user,error} = useSelector(state => state.auth);
+
+  useEffect(() => {
+    if(error && !user){
+      toast.error(error)
+    }
+    if(user){
+      navigate('/')
+      toast.success("registration completed ! ")
+    }
+  },[user, error,navigate])
 
   const handleChange = (event) => {
     setFormData({
@@ -40,14 +53,13 @@ const Register = () => {
         email,
         password,
       }
-      dispatch(register(userData))
-      toast.success("Register Successfully ! ")
+      dispatch(register(userData)) 
     }
   }
   return (
     <>
       <section className='register'>
-        <h1> <FaUser/> Register {user}</h1>
+        <h1> <FaUser/> Register </h1>
         <p>Please create an account</p>
       </section>
       <section className='form'>
