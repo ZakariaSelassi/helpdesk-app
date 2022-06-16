@@ -12,15 +12,17 @@ const req = require('express/lib/request')
 
 const getUserTickets = asyncHandler(async (req,res) => {
     
+    console.log(req.user.id)
     // Step 1 : Get user id
     const userID = await User.findById(req.user.id)
     if(!userID){
         res.status(401)
         throw new Error('User not found')
     }
+    console.log(userID)
     // STEP 2 : get all tickets existing for that user
     const tickets = await Ticket.find({user: req.user.id})
-
+    console.log(tickets)
     // STEP 3 : return json response with tickets
 
     res.status(200).json(tickets)
@@ -111,7 +113,7 @@ const deleteUserTicketById = asyncHandler (async(req,res) => {
 
 const updateUserTicket = asyncHandler (async(req,res) => {
     
-    const {product,description} = req.body;
+    const {product,description,status} = req.body;
     const userID = await User.findById(req.user.id)
     if(!userID){
         res.status(401)
@@ -130,6 +132,7 @@ const updateUserTicket = asyncHandler (async(req,res) => {
     const updatedUser = await Ticket.findByIdAndUpdate(req.params.id, {
         product: product,
         description: description,
+        status:status
     },{new:true})
 
     res.status(200).json(updatedUser)
