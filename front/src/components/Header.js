@@ -30,17 +30,19 @@ const Header = () => {
                   
                    ) 
                 : 
-                    (<Link to='/login'>
+                    (
+                    <>
+                    <Link to='/login'>
                     <FaSignInAlt /> Login
-                    </Link>)
+                    </Link>
+                       <Link to='/register'>
+                    <FaUser/> Register 
+                    </Link>
+                    </>)
                 }
                
             </li>
-            <li>
-                <Link to='/register'>
-                    <FaUser/> Register 
-                </Link>
-            </li>
+ 
         </ul>
     </header>
 
