@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const {protect} = require('../middleware/authMiddleware')
 const {getUserTickets,createUserTickets,getUserSingleTicket,deleteUserTicketById,updateUserTicket} = require('../controllers/ticketController')
+
+// Re-route to noteRouter
+const noteRouter = require('./noteRoutes')
+router.use('/:ticketId/notes',noteRouter)
 // create a ticket
 router.post('/',protect,createUserTickets)
 

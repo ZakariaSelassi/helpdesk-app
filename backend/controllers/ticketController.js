@@ -2,8 +2,7 @@ const asyncHandler = require('express-async-handler')
 const User = require('../models/userModel')
 const Ticket = require('../models/ticketModel')
 const { restart } = require('nodemon')
-const res = require('express/lib/response')
-const req = require('express/lib/request')
+
 
 
 // @desc    Get user tickets
